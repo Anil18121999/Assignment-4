@@ -12,6 +12,13 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
+        self.capital_latter_connected = False
+        self.small_latter_connected = False
+        self.specialchar_latter_connected = False
+        self.typing_mode = ""
+        
+        self.specialchar_mode = False
+        self.uppercase_mode = False
         self.line_edit = ""
         self.type_mode = ""
         MainWindow.setObjectName("MainWindow")
@@ -1072,7 +1079,7 @@ class Ui_MainWindow(object):
         self.pushButton_29.setText(_translate("MainWindow", "←"))
         self.pushButton_30.setText(_translate("MainWindow", "123"))
         
-        # self.pushButton_2.setText(_translate("MainWindow", "q"))
+        # self.pushButton_2.setText(_translate("MainWindow", "Q"))
         # self.pushButton_3.setText(_translate("MainWindow", "w"))
         # self.pushButton_5.setText(_translate("MainWindow", "e"))
         # self.pushButton_6.setText(_translate("MainWindow", "r"))
@@ -1102,16 +1109,35 @@ class Ui_MainWindow(object):
         self.frame_2.hide()
         self.frame.mousePressEvent = lambda event: self.frame_2.hide()
         self.small_latter()
+        # self.capital_latter()
         self.on_button_clicked()
-        self.pushButton_30.clicked.connect(self.special_char)
-        self.pushButton_21.clicked.connect(self.capital_latter)
-        
+        self.pushButton_30.clicked.connect(self.switch_case_for_special_char)
+        self.pushButton_21.clicked.connect(self.switch_case_for_capital_char)
+        # self.on_button_clicked_for_small() 
+        # self.on_button_clicked_for_special_char()
+        # self.on_button_clicked_for_capital()
         # self.pushButton_21.clicked.connect(self.small_latter('capital'))
         self.pushButton_29.clicked.connect(lambda: self.delete_character(self.line_edit))
         self.lineEdit.mousePressEvent = lambda event: self.show_keyboard(self.lineEdit)
         self.lineEdit_2.mousePressEvent = lambda event: self.show_keyboard(self.lineEdit_2)
         self.lineEdit_3.mousePressEvent = lambda event: self.show_keyboard(self.lineEdit_3)
         self.lineEdit_4.mousePressEvent = lambda event: self.show_keyboard(self.lineEdit_4)
+    def switch_case_for_special_char(self):
+        
+        self.specialchar_mode = not self.specialchar_mode
+        if self.specialchar_mode:
+             self.special_char()
+        else:
+             self.small_latter()  
+    def switch_case_for_capital_char(self):
+        self.uppercase_mode = not self.uppercase_mode
+        
+        if self.uppercase_mode:
+             self.capital_latter()    
+        else:
+             self.small_latter()     
+       
+                   
     def delete_character(self, lineEdit):
         print(lineEdit, "delete")
         cursor_position = lineEdit.cursorPosition() 
@@ -1123,88 +1149,129 @@ class Ui_MainWindow(object):
                 lineEdit.setCursorPosition(cursor_position - 1)
         else:
                 print("Cursor index is 0")
-
-    def on_button_clicked(self):
-        print(self.type_mode, ": in button check the mode")
-         
-        if (self.type_mode == 'numeric'):
+    def on_button_clicked_for_capital(self):
+#         # for button in self.buttons():
+#         #      button.clicked.disconnect(self.small_latter)
+#         #      button.clicked.disconnect(self.special_char)     
+#         # for button in self.buttons():
                 
-                self.pushButton_2.clicked.connect(lambda _, value = str("1"): self.set_value_to_lineEdit(self.line_edit, value))
-                self.pushButton_3.clicked.connect(lambda _, value = str("2"): self.set_value_to_lineEdit(self.line_edit, value)) 
-                self.pushButton_5.clicked.connect(lambda _, value = str("3"): self.set_value_to_lineEdit(self.line_edit, value))
-                self.pushButton_6.clicked.connect(lambda _, value = str(self.pushButton_6.text()): self.set_value_to_lineEdit(self.line_edit, value))
-                self.pushButton_7.clicked.connect(lambda _, value = str(self.pushButton_7.text()): self.set_value_to_lineEdit(self.line_edit, value)) 
-                self.pushButton_8.clicked.connect(lambda _, value = str(self.pushButton_8.text()): self.set_value_to_lineEdit(self.line_edit, value)) 
-        #         # self.pushButton_9.clicked.connect(lambda _, value = str(self.pushButton_9.text()): self.set_value_to_lineEdit(self.line_edit, value)) 
-        #         # self.pushButton_10.clicked.connect(lambda _, value = str(self.pushButton_10.text()): self.set_value_to_lineEdit(self.line_edit, value))
-        #         # self.pushButton_11.clicked.connect(lambda _, value = str(self.pushButton_11.text()): self.set_value_to_lineEdit(self.line_edit, value)) 
-        #         # self.pushButton_4.clicked.connect(lambda _, value = str(self.pushButton_4.text()): self.set_value_to_lineEdit(self.line_edit, value)) 
-        #         # self.pushButton_12.clicked.connect(lambda _, value = str(self.pushButton_12.text()): self.set_value_to_lineEdit(self.line_edit, value)) 
-        #         # self.pushButton_13.clicked.connect(lambda _, value = str(self.pushButton_13.text()): self.set_value_to_lineEdit(self.line_edit, value))
-        #         # self.pushButton_14.clicked.connect(lambda _, value = str(self.pushButton_14.text()): self.set_value_to_lineEdit(self.line_edit, value)) 
-        #         # self.pushButton_15.clicked.connect(lambda _, value = str(self.pushButton_15.text()): self.set_value_to_lineEdit(self.line_edit, value)) 
-        #         # self.pushButton_16.clicked.connect(lambda _, value = str(self.pushButton_16.text()): self.set_value_to_lineEdit(self.line_edit, value)) 
-        #         # self.pushButton_17.clicked.connect(lambda _, value = str(self.pushButton_17.text()): self.set_value_to_lineEdit(self.line_edit, value))
-        #         # self.pushButton_18.clicked.connect(lambda _, value = str(self.pushButton_18.text()): self.set_value_to_lineEdit(self.line_edit, value)) 
-        #         # self.pushButton_19.clicked.connect(lambda _, value = str(self.pushButton_19.text()): self.set_value_to_lineEdit(self.line_edit, value)) 
-        #         # self.pushButton_20.clicked.connect(lambda _, value = str(self.pushButton_20.text()): self.set_value_to_lineEdit(self.line_edit, value)) 
-        #         # self.pushButton_22.clicked.connect(lambda _, value = str(self.pushButton_22.text()): self.set_value_to_lineEdit(self.line_edit, value))
-        #         # self.pushButton_23.clicked.connect(lambda _, value = str(self.pushButton_23.text()): self.set_value_to_lineEdit(self.line_edit, value)) 
-        #         # self.pushButton_24.clicked.connect(lambda _, value = str(self.pushButton_24.text()): self.set_value_to_lineEdit(self.line_edit, value)) 
-        #         # self.pushButton_25.clicked.connect(lambda _, value = str(self.pushButton_25.text()): self.set_value_to_lineEdit(self.line_edit, value)) 
-        #         # self.pushButton_26.clicked.connect(lambda _, value = str(self.pushButton_26.text()): self.set_value_to_lineEdit(self.line_edit, value))
-        #         # self.pushButton_27.clicked.connect(lambda _, value = str(self.pushButton_27.text()): self.set_value_to_lineEdit(self.line_edit, value)) 
-        #         # self.pushButton_28.clicked.connect(lambda _, value = str(self.pushButton_28.text()): self.set_value_to_lineEdit(self.line_edit, value))
-        elif( self.type_mode == 'capital'):
-                print("elif of capital")
-                self.pushButton_2.clicked.connect(lambda _, value = str("Q"): self.set_value_to_lineEdit(self.line_edit, value))
-                self.pushButton_3.clicked.connect(lambda _, value = str("W"): self.set_value_to_lineEdit(self.line_edit, value)) 
-                self.pushButton_5.clicked.connect(lambda _, value = str("E"): self.set_value_to_lineEdit(self.line_edit, value))
-                self.pushButton_6.clicked.connect(lambda _, value = str(self.pushButton_6.text()): self.set_value_to_lineEdit(self.line_edit, value))
-                self.pushButton_7.clicked.connect(lambda _, value = str(self.pushButton_7.text()): self.set_value_to_lineEdit(self.line_edit, value)) 
-                self.pushButton_8.clicked.connect(lambda _, value = str(self.pushButton_8.text()): self.set_value_to_lineEdit(self.line_edit, value)) 
-        #         # self.pushButton_9.clicked.connect(lambda _, value = str(self.pushButton_9.text()): self.set_value_to_lineEdit(self.line_edit, value)) 
-        #         # self.pushButton_10.clicked.connect(lambda _, value = str(self.pushButton_10.text()): self.set_value_to_lineEdit(self.line_edit, value))
-        #         # self.pushButton_11.clicked.connect(lambda _, value = str(self.pushButton_11.text()): self.set_value_to_lineEdit(self.line_edit, value)) 
-        #         # self.pushButton_4.clicked.connect(lambda _, value = str(self.pushButton_4.text()): self.set_value_to_lineEdit(self.line_edit, value)) 
-        #         # self.pushButton_12.clicked.connect(lambda _, value = str(self.pushButton_12.text()): self.set_value_to_lineEdit(self.line_edit, value)) 
-        #         # self.pushButton_13.clicked.connect(lambda _, value = str(self.pushButton_13.text()): self.set_value_to_lineEdit(self.line_edit, value))
-        #         # self.pushButton_14.clicked.connect(lambda _, value = str(self.pushButton_14.text()): self.set_value_to_lineEdit(self.line_edit, value)) 
-        #         # self.pushButton_15.clicked.connect(lambda _, value = str(self.pushButton_15.text()): self.set_value_to_lineEdit(self.line_edit, value)) 
-        #         # self.pushButton_16.clicked.connect(lambda _, value = str(self.pushButton_16.text()): self.set_value_to_lineEdit(self.line_edit, value)) 
-        #         # self.pushButton_17.clicked.connect(lambda _, value = str(self.pushButton_17.text()): self.set_value_to_lineEdit(self.line_edit, value))
-        #         # self.pushButton_18.clicked.connect(lambda _, value = str(self.pushButton_18.text()): self.set_value_to_lineEdit(self.line_edit, value)) 
-        #         # self.pushButton_19.clicked.connect(lambda _, value = str(self.pushButton_19.text()): self.set_value_to_lineEdit(self.line_edit, value)) 
-        #         # self.pushButton_20.clicked.connect(lambda _, value = str(self.pushButton_20.text()): self.set_value_to_lineEdit(self.line_edit, value)) 
-        #         # self.pushButton_22.clicked.connect(lambda _, value = str(self.pushButton_22.text()): self.set_value_to_lineEdit(self.line_edit, value))
-        #         # self.pushButton_23.clicked.connect(lambda _, value = str(self.pushButton_23.text()): self.set_value_to_lineEdit(self.line_edit, value)) 
-        #         # self.pushButton_24.clicked.connect(lambda _, value = str(self.pushButton_24.text()): self.set_value_to_lineEdit(self.line_edit, value)) 
-        #         # self.pushButton_25.clicked.connect(lambda _, value = str(self.pushButton_25.text()): self.set_value_to_lineEdit(self.line_edit, value)) 
-        #         # self.pushButton_26.clicked.connect(lambda _, value = str(self.pushButton_26.text()): self.set_value_to_lineEdit(self.line_edit, value))
-        #         # self.pushButton_27.clicked.connect(lambda _, value = str(self.pushButton_27.text()): self.set_value_to_lineEdit(self.line_edit, value)) 
-        
-        #         # self.pushButton_28.clicked.connect(lambda _, value = str(self.pushButton_28.text()): self.set_value_to_lineEdit(self.line_edit, value))
-        elif( self.type_mode == 'small'):
-                self.pushButton_2.clicked.connect(lambda _, value = str("q"): self.set_value_to_lineEdit(self.line_edit, value))
-                self.pushButton_3.clicked.connect(lambda _, value = str("w"): self.set_value_to_lineEdit(self.line_edit, value)) 
-                self.pushButton_5.clicked.connect(lambda _, value = str("e"): self.set_value_to_lineEdit(self.line_edit, value))        
+#         # if (self.special_char_type == 'special_char'):
+        uppercase_letters = "QWERTYUIOPASDFGHJKLZXCVBNM "
+                # Iterate through buttons and assign Special letters
+        for i, button in enumerate(self.buttons()):
+                button.clicked.connect(lambda _, value=str(uppercase_letters[i]): self.set_value_to_lineEdit(self.line_edit, value))
+    def on_button_clicked(self):
+
+
+        if self.typing_mode == "small":
+                lowercase_letters = "qwertyuiopasdfghjklzxcvbnm "
+                # Iterate through buttons and assign Special letters
+                for i, button in enumerate(self.buttons()):
+                        button.clicked.connect(lambda _, value=str(lowercase_letters[i]): self.set_value_to_lineEdit(self.line_edit, value))
+        # elif self.typing_mode == "capital" :
+        #         uppercase_letters = "QWERTYUIOPASDFGHJKLZXCVBNM "
+        #         # Iterate through buttons and assign Special letters
+        #         for i, button in enumerate(self.buttons()):
+        #                 button.clicked.connect(lambda _, value=str(uppercase_letters[i]): self.set_value_to_lineEdit(self.line_edit, value))
         else:
-             print("mode not valide")    
+                special_characters = "1234567890-/:;()*$@.,!#%+= "
+                # Iterate through buttons and assign Special letters
+                for i, button in enumerate(self.buttons()):
+                        button.clicked.connect(lambda _, value=str(special_characters[i]): self.set_value_to_lineEdit(self.line_edit, value)) 
+                      
+
+        # if self.capital_latter_connected and self.specialchar_latter_connected:
+        #     self.capital_latter_connected = False
+        #     self.specialchar_latter_connected = False
+        #     for button in self.buttons():
+        #         button.clicked.disconnect(self.capital_latter)
+        #         button.clicked.disconnect(self.special_char) 
+        # else:
+        #         # for button in self.buttons():
+        #         #         button.clicked.connect(self.small_latter)
+        #         lowercase_letters = "qwertyuiopasdfghjklzxcvbnm "
+        #         # Iterate through buttons and assign Special letters
+        #         for i, button in enumerate(self.buttons()):
+        #                 button.clicked.connect(lambda _, value=str(lowercase_letters[i]): self.set_value_to_lineEdit(self.line_edit, value))
+        # if self.capital_latter_connected and self.small_latter_connected:
+        #     self.capital_latter_connected = False
+        #     self.small_latter_connected = False
+        #     for button in self.buttons():
+        #         button.clicked.disconnect(self.capital_latter)
+        #         button.clicked.disconnect(self.small_latter)
+        # else:  
+        #         # for button in self.buttons():
+        #         #         button.clicked.connect(self.special_char)      
+        # # for button in self.buttons():
+        # # for button in self.buttons():
+        # #      button.         
+        # # if (self.special_char_type == 'special_char'):
+        #         special_characters = "1234567890-/:;()*$@.,!#%+= "
+        #         # Iterate through buttons and assign Special letters
+        #         for i, button in enumerate(self.buttons()):
+        #                 button.clicked.connect(lambda _, value=str(special_characters[i]): self.set_value_to_lineEdit(self.line_edit, value))        
+        # if self.small_latter_connected and self.specialchar_latter_connected:
+        #     self.capital_latter_connected = False
+        #     self.specialchar_latter_connected = False
+        #     for button in self.buttons():
+        #         button.clicked.disconnect(self.small_latter)
+        #         button.clicked.disconnect(self.special_char)
+        # else:         
+        #         uppercase_letters = "QWERTYUIOPASDFGHJKLZXCVBNM "
+        #         # Iterate through buttons and assign Special letters
+        #         for i, button in enumerate(self.buttons()):
+        #                 button.clicked.connect(lambda _, value=str(uppercase_letters[i]): self.set_value_to_lineEdit(self.line_edit, value))           
         # for button in self.buttons():
-        #         button.clicked.connect(lambda _, value = str(button.text()): self.set_value_to_lineEdit(self.line_edit, value))
-        #         print("button value :" + str(button.text()))
-                # button.clicked.connect(functools.partial(self.set_value_to_lineEdit, self.line_edit, button.text()))
+        #      button.clicked.disconnect(self.capital_latter)
+        #      button.clicked.disconnect(self.special_char)     
+        # for button in self.buttons():
+                
+        # if (self.special_char_type == 'special_char'):
+        
+#     def on_button_clicked_for_special_char(self):
+#         if self.capital_latter_connected and self.small_latter_connected:
+#             self.capital_latter_connected = False
+#             self.small_latter_connected = False
+#             for button in self.buttons():
+#                 button.clicked.disconnect(self.capital_latter)
+#                 button.clicked.disconnect(self.small_latter)
+#         else:  
+#                 # for button in self.buttons():
+#                 #         button.clicked.connect(self.special_char)      
+#         # for button in self.buttons():
+#         # for button in self.buttons():
+#         #      button.         
+#         # if (self.special_char_type == 'special_char'):
+#                 special_characters = "1234567890-/:;()*$@.,!#%+= "
+#                 # Iterate through buttons and assign Special letters
+#                 for i, button in enumerate(self.buttons()):
+#                         button.clicked.connect(lambda _, value=str(special_characters[i]): self.set_value_to_lineEdit(self.line_edit, value))
+             
+
+
+        # else:        
+        #         for button in self.buttons():
+        #                 # Disconnect all previous connections
+        #                 # button.clicked.connect(lambda _, value=str(button.text()): self.set_value_to_lineEdit(self.line_edit, value.upper() if self.uppercase_mode else value.lower() value if self.sp))
+        #                 button.clicked.connect(lambda _, value=str(button.text()): self.set_value_to_lineEdit(self.line_edit, value))
+
+
+                        # button.clicked.disconnect()
+        # else:
+        #         print("Mode not valid")
+    
+   
     def set_value_to_lineEdit(self, lineEdit, value):
-        print(value, ": value")
+        print("button text value :", value)
         
         if lineEdit is None:
              print("Invalid Line Edit")
              return
-        # cursor_position = lineEdit.cursorPosition() 
+        cursor_position = lineEdit.cursorPosition() 
         # print(cursor_position, "cursor")
-        # lineEdit.setText(str(lineEdit.text()[:cursor_position]) + str(value) + str(lineEdit.text()[cursor_position:])) 
-        # lineEdit.setCursorPosition(cursor_position + 1)
-        lineEdit.setText(str(lineEdit.text()) + str(value))
+        lineEdit.setText(str(lineEdit.text()[:cursor_position]) + str(value) + str(lineEdit.text()[cursor_position:])) 
+        lineEdit.setCursorPosition(cursor_position + 1)
+        # lineEdit.setText(str(lineEdit.text()) + str(value))
         
         
     def show_keyboard(self, line_num):
@@ -1214,40 +1281,63 @@ class Ui_MainWindow(object):
         self.frame_2.show()
         
     def small_latter(self):
+        self.typing_mode = "small"
+        # if hasattr(self, "special_char"):
+        #         self.pushButton_21.clicked.disconnect(self.special_char)  # Disconnect the previous connection 
+        # self.type_mode = 'small'
+        # # Define lowercase letters
         
-        self.type_mode = 'small'
-        # Define lowercase letters
-        lowercase_letters = "qwertyuiopasdfghjklzxcvbnm"
+        lowercase_letters = "qwertyuiopasdfghjklzxcvbnm "
         # Iterate through buttons and assign lowercase letters
         for i, button in enumerate(self.buttons()):
             button.setText(lowercase_letters[i])
-        
-        
-        
+        # if hasattr(self, "small_latter_connection"):
+        #         self.pushButton_21.clicked.disconnect(self.small_latter_connection)  # Disconnect the previous connection  
+        # self.pushButton_21.clicked.connect(self.small_latter) 
         
     def special_char(self):
+        self.typing_mode = "special"
+        # self.pushButton_30.clicked.connect(self.special_char)
+        # if hasattr(self, "special_char"):
+        #         self.pushButton_30.clicked.disconnect(self.special_char)  # Disconnect the previous connection 
         
-        self.type_mode = "numeric"
-        print(self.type_mode, ": in special check the mode")
+        # self.special_char_type = 'special_char' 
+        
+            
+            
+        
+        # self.type_mode = "numeric"
+        # print(self.type_mode, ": in special check the mode")
         # Define Special letters
-        special_characters = "1234567890-/:;()*$@.,!#%+="
+        special_characters = "1234567890-/:;()*$@.,!#%+= "
         # Iterate through buttons and assign Special letters
         for i, button in enumerate(self.buttons()):
             button.setText(special_characters[i])
-        #     print(button.text(), "after setting the special char")
-        # self.pushButton_30.clicked.connect(self.small_latter)
+            
+#         #     print(button.text(), "after setting the special char")
+#         if hasattr(self, "special_char_connection"):
+#                 self.pushButton_30.clicked.disconnect(self.special_char_connection)  # Disconnect the previous connection
         
+        
+         
     def capital_latter(self):
-        self.type_mode = "capital"
-        print(self.type_mode, ": in capital check the mode")
+        
+
+        # self.typing_mode = "capital"
+        # for i, button in enumerate(self.buttons()):
+        #     button.
+        # self.type_mode = "capital"
+        # print(self.type_mode, ": in capital check the mode")
         # Define uppercase letters
-        uppercase_letters = "QWERTYUIOPASDFGHJKLZXCVBNM"
+        uppercase_letters = "QWERTYUIOPASDFGHJKLZXCVBNM "
         # Iterate through buttons and assign uppercase letters
         for i, button in enumerate(self.buttons()):
             button.setText(uppercase_letters[i])
-             
-        
-        # self.pushButton_21.clicked.connect(self.small_latter)
+        # if hasattr(self, "capital_latter_connection"):
+        #         self.pushButton_21.clicked.disconnect(self.capital_latter_connection)  # Disconnect the previous connection
+        # self.pushButton_21.clicked.connect(self.capital_latter)
+        self.on_button_clicked_for_capital()
+
         
         
              
@@ -1260,7 +1350,7 @@ class Ui_MainWindow(object):
             self.pushButton_14, self.pushButton_15, self.pushButton_16, self.pushButton_17,
             self.pushButton_18, self.pushButton_19, self.pushButton_20, self.pushButton_22,
             self.pushButton_23, self.pushButton_24, self.pushButton_25, self.pushButton_26,
-            self.pushButton_27, self.pushButton_28
+            self.pushButton_27, self.pushButton_28, self.pushButton_31
         ]
 if __name__ == "__main__":
     import sys
